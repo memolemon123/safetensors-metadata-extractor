@@ -4,4 +4,4 @@ Web Tool For Extracting Metadata in Safetensors Files.
 
 ## URL
 
-Comming soon.
+https://safetensors-metadata-extractor.pages.dev/
