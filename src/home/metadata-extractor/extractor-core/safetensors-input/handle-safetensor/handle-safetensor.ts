@@ -51,13 +51,17 @@ export function handleSafetensors(target: File, cb: (jsoncontent: string) => voi
         }
 
         if (doReadMetadataLenOnce && (metadataLen + 2 < buffer.length)) {
-            let s = (new TextDecoder().decode(buffer.slice(8, (metadataLen + 8))));
-            const wholeMetadata = JSON.parse(s);
-            if (wholeMetadata["__metadata__"]) {
-                const parsedData = recursiveParser(wholeMetadata["__metadata__"]);
-                cb(JSON.stringify(parsedData, undefined, 4));
-            } else {
-                errcb("The File Does Not Have Metadata or Invalid Safetensors File.");
+            try {
+                let s = (new TextDecoder().decode(buffer.slice(8, (metadataLen + 8))));
+                const wholeMetadata = JSON.parse(s);
+                if (wholeMetadata["__metadata__"]) {
+                    const parsedData = recursiveParser(wholeMetadata["__metadata__"]);
+                    cb(JSON.stringify(parsedData, undefined, 4));
+                } else {
+                    errcb("The File Does Not Have Metadata.");
+                }
+            } catch (error) {
+                errcb("Invalid Safetensors File.");
             }
 
             reader.cancel();
