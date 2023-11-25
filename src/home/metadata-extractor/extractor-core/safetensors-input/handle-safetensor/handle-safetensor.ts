@@ -4,10 +4,11 @@ interface parsedContainer {
     [key: string]: any;
 }
 
-function recursiveParser(target: string | Object) {
+function recursiveParser(target: any) {
     try {
         if (target == null) return target;
         if (typeof target === "string") target = JSON.parse(target);
+        if (typeof target !== "object") return target;
         const container: parsedContainer = {};
         for (let [key, val] of Object.entries(target)) {
             if (["string", "object"].includes(typeof val)) val = recursiveParser(val);
